@@ -44,13 +44,28 @@ def http_trigger(req: func.HttpRequest, reservations: func.SqlRowList) -> func.H
     # Forecast the next few months (e.g., 6 months)
     forecast_steps = 6
     forecast = sarima_model.forecast(steps=forecast_steps)
+
+    # Get the last date from the existing data
+    last_date = df.index[-1]
+    
+    # Prepare the forecast output in year, month, count format
+    forecast_output = []
+    
+    for i, count in enumerate(forecast):
+        # Calculate the next year and month
+        next_date = last_date + pd.DateOffset(months=i+1)
+        forecast_output.append({
+            "year": next_date.year,
+            "month": next_date.month,
+            "count": round(count)  # Round the forecasted count to integer
+        })
 	
 	# print the forecast
     logging.info("Forecasted values for EquipmentId: " + req.route_params['equipmentId'] + " are: " + str(forecast.to_list()))
 
     # Return the results
     return func.HttpResponse(
-        json.dumps(forecast.to_list()),
+        json.dumps(forecast_output.to_list()),
         status_code=200,
         mimetype="application/json"
     )
