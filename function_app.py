@@ -19,24 +19,24 @@ def http_trigger(req: func.HttpRequest, reservations: func.SqlRowList) -> func.H
 
     rows = list(map(lambda r: json.loads(r.to_json()), reservations))
 
-    # # Convert the data to a DataFrame
-    # df = pd.DataFrame(rows)
+    # Convert the data to a DataFrame
+    df = pd.DataFrame(rows)
 
-    # # Create a datetime index for the data
-    # df['date'] = pd.to_datetime(df[['year', 'month']].assign(day=1))
-    # df.set_index('date', inplace=True)
+    # Create a datetime index for the data
+    df['date'] = pd.to_datetime(df[['year', 'month']].assign(day=1))
+    df.set_index('date', inplace=True)
 
-    # # Extract the 'count' column as the time series data
-    # ts_data = df['count']
+    # Extract the 'count' column as the time series data
+    ts_data = df['count']
 
-    # # Fit the SARIMA model
-    # # (p, d, q) are the ARIMA parameters and (P, D, Q, s) are the seasonal parameters
-    # model = SARIMAX(ts_data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
-    # sarima_model = model.fit(disp=False)
+    # Fit the SARIMA model
+    # (p, d, q) are the ARIMA parameters and (P, D, Q, s) are the seasonal parameters
+    model = SARIMAX(ts_data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 12))
+    sarima_model = model.fit(disp=False)
 
-    # # Forecast the next few months (e.g., 6 months)
-    # forecast_steps = 6
-    # forecast = sarima_model.forecast(steps=forecast_steps)
+    # Forecast the next few months (e.g., 6 months)
+    forecast_steps = 6
+    forecast = sarima_model.forecast(steps=forecast_steps)
 
     # Return the results
     return func.HttpResponse(
