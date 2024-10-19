@@ -40,7 +40,7 @@ def http_trigger(req: func.HttpRequest, reservations: func.SqlRowList) -> func.H
 
     # Return the results
     return func.HttpResponse(
-        json.dumps(rows),
+        json.dumps(forecast),
         status_code=200,
         mimetype="application/json"
     )
