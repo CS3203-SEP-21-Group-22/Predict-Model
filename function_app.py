@@ -2,9 +2,9 @@ import json
 import azure.functions as func
 import logging
 from azure.functions.decorators.core import DataType
-# import pandas as pd
-# import statsmodels.api as sm
-# from statsmodels.tsa.statespace.sarimax import SARIMAX
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.tsa.statespace.sarimax import SARIMAX
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
