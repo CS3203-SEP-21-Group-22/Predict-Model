@@ -37,10 +37,13 @@ def http_trigger(req: func.HttpRequest, reservations: func.SqlRowList) -> func.H
     # Forecast the next few months (e.g., 6 months)
     forecast_steps = 6
     forecast = sarima_model.forecast(steps=forecast_steps)
+	
+	# print the forecast
+    logging.info("Forecasted values for EquipmentId: " + req.route_params['equipmentId'] + " are: " + str(forecast.to_list()))
 
     # Return the results
     return func.HttpResponse(
-        json.dumps(forecast),
+        json.dumps(forecast.to_list()),
         status_code=200,
         mimetype="application/json"
     )
