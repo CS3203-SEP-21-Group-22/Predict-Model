@@ -19,6 +19,13 @@ def http_trigger(req: func.HttpRequest, reservations: func.SqlRowList) -> func.H
 
     rows = list(map(lambda r: json.loads(r.to_json()), reservations))
 
+    # If rows is empty, return an empty response
+    if not rows:
+        return func.HttpResponse(
+            "No data found for the given EquipmentId",
+            status_code=404
+        )
+
     # Convert the data to a DataFrame
     df = pd.DataFrame(rows)
 
